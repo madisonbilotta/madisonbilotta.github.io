@@ -57,6 +57,13 @@ function collides(obj1, obj2) {
          obj1.y + obj1.height > obj2.y;
 }
 
+function resetScores() {
+  leftScore = 0;
+  rightScore = 0;
+  document.getElementById("leftScore").innerHTML = 0;
+document.getElementById("rightScore").innerHTML = 0;
+}
+
 // game loop
 function loop() {
   requestAnimationFrame(loop);
