@@ -40,13 +40,21 @@ h1.right {
   margin-bottom: 30%;
 }
 
+h2.gameMessage {
+  background-color: rgb(222, 135, 135);
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  width: 20%;
+  height: 7.5%;
+  font-size: x-large;
+  margin-top: 31%;
+}
+
 button.reset {
   background-color: burlywood;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   width: 20%;
   height: 8%;
   font-size: x-large;
-  position: fixed;
   margin-top: 30%;
 }
 
