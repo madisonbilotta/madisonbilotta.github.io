@@ -76,8 +76,6 @@ function isGameOver() {
   }
 }
 
-function gameOver() {
-}
 
 // game loop
 function loop() {
