@@ -2,12 +2,13 @@ const canvas = document.getElementById('game');
 const context = canvas.getContext('2d');
 document.getElementById("leftScore").innerHTML = 0;
 document.getElementById("rightScore").innerHTML = 0;
+
 const grid = 15;
 const paddleHeight = grid * 5; // 80
 const maxPaddleY = canvas.height - grid - paddleHeight;
 
 var paddleSpeed = 6;
-var ballSpeed = 5;
+var ballSpeed = 3;
 
 // init. scores
 let leftScore = 0;
@@ -61,7 +62,21 @@ function resetScores() {
   leftScore = 0;
   rightScore = 0;
   document.getElementById("leftScore").innerHTML = 0;
-document.getElementById("rightScore").innerHTML = 0;
+  document.getElementById("rightScore").innerHTML = 0;
+  document.getElementById("gameMessage").innerHTML = 'First Player to 7 Wins!';
+}
+
+function isGameOver() {
+  if (leftScore >= 7 || rightScore >= 7) {
+    document.getElementById("gameMessage").innerHTML = "Game Over...";
+    return true
+  }
+  else {
+    return false
+  }
+}
+
+function gameOver() {
 }
 
 // game loop
@@ -70,7 +85,8 @@ function loop() {
   context.clearRect(0,0,canvas.width,canvas.height);
 
   // move paddles by their velocity
-  leftPaddle.y += leftPaddle.dy;
+  // leftPaddle speed changed to match a slightly slower ballspeed
+  leftPaddle.y += ball.dy - 0.25;
   rightPaddle.y += rightPaddle.dy;
 
   // prevent paddles from going through walls
@@ -93,22 +109,25 @@ function loop() {
   context.fillRect(leftPaddle.x, leftPaddle.y, leftPaddle.width, leftPaddle.height);
   context.fillRect(rightPaddle.x, rightPaddle.y, rightPaddle.width, rightPaddle.height);
 
-  // move ball by its velocity
-  ball.x += ball.dx;
-  ball.y += ball.dy;
+  if (!isGameOver()) {
+    // move ball by its velocity
+    ball.x += ball.dx;
+    ball.y += ball.dy;
+  
+    // prevent ball from going through walls by changing its velocity
+    if (ball.y < grid) {
+      ball.y = grid;
+      ball.dy *= -1;
+    }
+    else if (ball.y + grid > canvas.height - grid) {
+      ball.y = canvas.height - grid * 2;
+      ball.dy *= -1;
+    }
 
-  // prevent ball from going through walls by changing its velocity
-  if (ball.y < grid) {
-    ball.y = grid;
-    ball.dy *= -1;
-  }
-  else if (ball.y + grid > canvas.height - grid) {
-    ball.y = canvas.height - grid * 2;
-    ball.dy *= -1;
   }
 
   // reset ball if it goes past paddle (but only if we haven't already done so)
-  if ( (ball.x < 0 || ball.x > canvas.width) && !ball.resetting) {
+  if ( (ball.x < 0 || ball.x > canvas.width) && !ball.resetting && !isGameOver()) {
     ball.resetting = true;
 
     if (ball.x < 0) {
